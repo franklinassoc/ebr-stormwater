@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/EBRWatersheds_1.js"></script>
+        <script src="data/Council_District_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:16, minZoom:10
+        }).fitBounds([[30.296315109740263,-91.35539626171352],[30.725090556864657,-90.61076511254593]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        var layer_ESRITopo_0 = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 10,
+            maxZoom: 16,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRITopo_0;
+        map.addLayer(layer_ESRITopo_0);
+        function pop_EBRWatersheds_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Watershed: </th>\
+                        <td>' + (feature.properties['EBR_WtrShd'] !== null ? Autolinker.link(feature.properties['EBR_WtrShd'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_EBRWatersheds_1_0(feature) {
+            switch(String(feature.properties['EBR_WtrShd'])) {
+                case 'Bayou Baton Rouge / Lower-Upper Cypress / White':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(248,242,42,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Bayou Fountain / Bayou Manchac':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(24,53,245,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Central Watersheds':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(135,135,135,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Clay Cut Bayou':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(85,191,23,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Cooper Bayou / Lilly Bayou':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(255,127,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Devils Swamp / Monte-Sano Bayou':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(253,191,111,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Hurricane Creek / Engineer Depot Canal':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(204,45,159,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jones Creek / Amite-Comite Tribs':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sandy Creek':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(42,241,11,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Upper Amite River and Tribs':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(165,89,236,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Upper Comite Tribs / Redwood Creek':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(92,182,227,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Ward Creek':
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(53,231,190,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_EBRWatersheds_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_EBRWatersheds_1');
+        map.getPane('pane_EBRWatersheds_1').style.zIndex = 401;
+        map.getPane('pane_EBRWatersheds_1').style['mix-blend-mode'] = 'normal';
+        var layer_EBRWatersheds_1 = new L.geoJson(json_EBRWatersheds_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_EBRWatersheds_1',
+            layerName: 'layer_EBRWatersheds_1',
+            pane: 'pane_EBRWatersheds_1',
+            onEachFeature: pop_EBRWatersheds_1,
+            style: style_EBRWatersheds_1_0,
+        });
+        bounds_group.addLayer(layer_EBRWatersheds_1);
+        map.addLayer(layer_EBRWatersheds_1);
+        function pop_Council_District_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['ID'] !== null ? Autolinker.link(feature.properties['ID'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNCIL_PE'] !== null ? Autolinker.link(feature.properties['COUNCIL_PE'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DISTRICT_N'] !== null ? Autolinker.link(feature.properties['DISTRICT_N'].toLocaleString(), {truncate: {length: 30, location: 'smart'}}) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Council_District_2_0() {
+            return {
+                pane: 'pane_Council_District_2',
+                opacity: 1,
+                color: 'rgba(228,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Council_District_2');
+        map.getPane('pane_Council_District_2').style.zIndex = 402;
+        map.getPane('pane_Council_District_2').style['mix-blend-mode'] = 'normal';
+        var layer_Council_District_2 = new L.geoJson(json_Council_District_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Council_District_2',
+            layerName: 'layer_Council_District_2',
+            pane: 'pane_Council_District_2',
+            onEachFeature: pop_Council_District_2,
+            style: style_Council_District_2_0,
+        });
+        bounds_group.addLayer(layer_Council_District_2);
+            var abstract = new L.Control({'position':'bottomleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control leaflet-bar abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Watershed  and Metro Council district boundaries provided by HNTB and EBR Parish. Topo base by ESRI. Produced as part of the East Baton Rouge Parish Stormwater Master Plan project, 2020.';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Council_District_2.png" /> Council District': layer_Council_District_2,'EBR Watersheds<br /><table><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_BayouBatonRougeLowerUpperCypressWhite0.png" /></td><td>Bayou Baton Rouge / Lower-Upper Cypress / White</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_BayouFountainBayouManchac1.png" /></td><td>Bayou Fountain / Bayou Manchac</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_CentralWatersheds2.png" /></td><td>Central Watersheds</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_ClayCutBayou3.png" /></td><td>Clay Cut Bayou</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_CooperBayouLillyBayou4.png" /></td><td>Cooper Bayou / Lilly Bayou</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_DevilsSwampMonteSanoBayou5.png" /></td><td>Devils Swamp / Monte-Sano Bayou</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_HurricaneCreekEngineerDepotCanal6.png" /></td><td>Hurricane Creek / Engineer Depot Canal</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_JonesCreekAmiteComiteTribs7.png" /></td><td>Jones Creek / Amite-Comite Tribs</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_SandyCreek8.png" /></td><td>Sandy Creek</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_UpperAmiteRiverandTribs9.png" /></td><td>Upper Amite River and Tribs</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_UpperComiteTribsRedwoodCreek10.png" /></td><td>Upper Comite Tribs / Redwood Creek</td></tr><tr><td style="text-align: center;"><img src="legend/EBRWatersheds_1_WardCreek11.png" /></td><td>Ward Creek</td></tr></table>': layer_EBRWatersheds_1,"ESRI Topo": layer_ESRITopo_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_EBRWatersheds_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['EBR_WtrShd'] !== null?String('<div style="color: #000000; font-size: 9pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['EBR_WtrShd']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_EBRWatersheds_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Council_District_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_Council_District_2_eval_expression(context) !== null?String('<div style="color: #e31a1c; font-size: 9pt; font-weight: bold; font-family: \'Myriad Pro\', sans-serif;">' + exp_label_Council_District_2_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Council_District_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_EBRWatersheds_1,layer_Council_District_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_EBRWatersheds_1,layer_Council_District_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_EBRWatersheds_1,layer_Council_District_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_EBRWatersheds_1,layer_Council_District_2]);
+        });
+        </script>
+    </body>
+</html>
